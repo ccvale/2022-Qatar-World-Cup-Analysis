@@ -1,0 +1,2 @@
+- Want to color many of the bar graphs by COUNTRY that the player plays for (can't figure this out with seaborn)
+- Want to find a way to merge information with players and player_keepers conditionally such that we can join together information about the keeper
