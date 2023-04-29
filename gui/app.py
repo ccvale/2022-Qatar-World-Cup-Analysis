@@ -5,13 +5,13 @@ import plotly.express as px
 
 st.title('World Cup Matches')
 
-@st.cache_data
+@st.cache_data # cache data so it doesn't have to be reloaded every time
 def load_data(df_path: str):
     data = pd.read_csv(df_path)
     return data
 
 def get_opponents(teamA):
-    # create a list of all the teams that have played against the home team
+    # get all opponents that teamA has played against, so we have access to only real matches that were played
     opponents = matches[(matches['team1'] == teamA) | (matches['team2'] == teamA)]
     opponents = opponents[(opponents['team1'] != teamA) | (opponents['team2'] != teamA)]
     opponents = opponents['team1'].append(opponents['team2'])
@@ -22,7 +22,7 @@ def get_opponents(teamA):
 data_load_state = st.text('Loading data...')
 countries = load_data('gui/final_countries.csv')
 matches = load_data('gui/final_matches.csv')
-data_load_state.text('')
+data_load_state.text('') # data is loaded and cached
 
 if st.checkbox('Show Groups'):
     groupID = st.select_slider('Select a Group', options=['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'])
@@ -33,18 +33,17 @@ if st.checkbox('Show Groups'):
 st.write('---')
 
 st.write('## Generate Match Statistics')
-# create a dropdown menu of all the countries
-teamA = st.selectbox('Select country', countries['Nation'].unique())
-# create a dropdown menu of all the countries that have played against the home team
 
+teamA = st.selectbox('Select country', countries['Nation'].unique())
 teamB = st.selectbox('Select opponent they\'ve played against', get_opponents(teamA))
 
 match = matches[((matches['team1'] == teamA) & (matches['team2'] == teamB)) | ((matches['team1'] == teamB) & (matches['team2'] == teamA))]
-st.write(match) # will be removed later
+st.write(match) # will be removed later; just for testing
 
 stat = st.selectbox('Select statistic to visualize', options=['Possession', 'Goals', 'Assists', 'Shots Attempted', 'Total Passes', 'Fouls Committed', 'Forced Turnovers', 'Goal Preventions'])
 st.subheader(f'Visualizing {stat} - {teamA} vs {teamB} ({match["category"].values[0]})')
 
+# different graphs; different stats? more customization?
 if stat == 'Possession':
     fig = px.pie(match, values=[match['possession team1'].values[0], match['possession team2'].values[0]], names=[match['team1'].values[0], match['team2'].values[0]])
     st.plotly_chart(fig, use_container_width=True)
