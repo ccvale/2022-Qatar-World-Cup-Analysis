@@ -10,3 +10,5 @@ To run the application (given all requirements are installed):
 ```arduino
 streamlit run app.py
 ```
+
+Or alternatively, you can run the application from the [hosted version of the webpage](https://ccvale-2022-qatar-world-cup-analysis-guiapp-go6eoz.streamlit.app).
