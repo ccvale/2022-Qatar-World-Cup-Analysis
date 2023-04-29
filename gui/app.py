@@ -18,6 +18,7 @@ def get_opponents(teamA):
     opponents = opponents[(opponents['team1'] != teamA) | (opponents['team2'] != teamA)]
     opponents = opponents['team1'].append(opponents['team2'])
     opponents = opponents.unique()
+    opponents = np.delete(opponents, np.where(opponents == teamA))
     return opponents
 
 data_load_state = st.text('Loading data...')
@@ -38,12 +39,14 @@ st.write('## Generate Match Statistics')
 teamA = st.selectbox('Select country', countries['Nation'].unique())
 # create a dropdown menu of all the countries that have played against the home team
 
-teamB = st.selectbox('Select opponent they\'ve played against', get_opponents(teamA)[1:])
+teamB = st.selectbox('Select opponent they\'ve played against', get_opponents(teamA))
 
 match = matches[((matches['team1'] == teamA) & (matches['team2'] == teamB)) | ((matches['team1'] == teamB) & (matches['team2'] == teamA))]
 st.write(match)
-stat = st.selectbox('Select statistic to visualize', options=['Possession', 'Goals', 'Assists', 'Shots', 'Total Passes'])
+
+stat = st.selectbox('Select statistic to visualize', options=['Possession', 'Goals', 'Assists', 'Shots Attempted', 'Total Passes', 'Fouls Committed', 'Forced Turnovers'])
 st.subheader(f'Visualizing {stat} - {teamA} vs {teamB} ({match["category"].values[0]})')
+
 if stat == 'Possession':
     fig = px.pie(match, values=[match['possession team1'].values[0], match['possession team2'].values[0]], names=[match['team1'].values[0], match['team2'].values[0]])
     st.plotly_chart(fig, use_container_width=True)
@@ -52,8 +55,17 @@ elif stat == 'Goals':
     fig = px.bar(match, x=[match['team1'].values[0], match['team2'].values[0]], y=[match['number of goals team1'].values[0], match['number of goals team2'].values[0]], color=[match['team1'].values[0], match['team2'].values[0]])
     st.plotly_chart(fig, use_container_width=True)
 elif stat == 'Assists':
-    st.write('adsfasd')
-elif stat == 'Shots':
-    st.write('adsfasd')
+    fig = px.bar(match, x=[match['team1'].values[0], match['team2'].values[0]], y=[match['assists team1'].values[0], match['assists team2'].values[0]], color=[match['team1'].values[0], match['team2'].values[0]])
+    st.plotly_chart(fig, use_container_width=True)
+elif stat == 'Shots Attempted':
+    fig = px.bar(match, x=[match['team1'].values[0], match['team2'].values[0]], y=[match['total attempts team1'].values[0], match['total attempts team2'].values[0]], color=[match['team1'].values[0], match['team2'].values[0]])
+    st.plotly_chart(fig, use_container_width=True)
 elif stat == 'Total Passes':
-    st.write('adsfasd')
+    fig = px.bar(match, x=[match['team1'].values[0], match['team2'].values[0]], y=[match['passes completed team1'].values[0], match['passes completed team2'].values[0]], color=[match['team1'].values[0], match['team2'].values[0]])
+    st.plotly_chart(fig, use_container_width=True)
+elif stat == 'Fouls Committed':
+    fig = px.bar(match, x=[match['team1'].values[0], match['team2'].values[0]], y=[match['fouls against team1'].values[0], match['fouls against team2'].values[0]], color=[match['team1'].values[0], match['team2'].values[0]])
+    st.plotly_chart(fig, use_container_width=True)
+elif stat == 'Forced Turnovers':
+    fig = px.bar(match, x=[match['team1'].values[0], match['team2'].values[0]], y=[match['forced turnovers team1'].values[0], match['forced turnovers team2'].values[0]], color=[match['team1'].values[0], match['team2'].values[0]])
+    st.plotly_chart(fig, use_container_width=True)
