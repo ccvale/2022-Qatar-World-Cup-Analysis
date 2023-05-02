@@ -1,2 +1,6 @@
 - Want to color many of the bar graphs by COUNTRY that the player plays for (can't figure this out with seaborn)
 - Want to find a way to merge information with players and player_keepers conditionally such that we can join together information about the keeper
+
+
+
+[['home_team', 'away_team', 'home_xg', 'away_xg', 'home_possession', 'away_possession', 'home_completed_passes', 'away_completed_passes', 'home_attempted_passes', 'away_attempted_passes', 'attendance', 'venue', 'home_formation', 'away_formation', 'home_sot', 'away_sot', 'home_total_shots', 'away_total_shots', 'home_fouls', 'away_fouls', 'home_touches', 'away_touches', 'home_interceptions', 'away_interceptions', ]]
