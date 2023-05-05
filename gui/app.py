@@ -38,7 +38,7 @@ teamA = st.selectbox('Select country', countries['Nation'].unique())
 teamB = st.selectbox('Select opponent they\'ve played against', get_opponents(teamA))
 
 match = matches[((matches['team1'] == teamA) & (matches['team2'] == teamB)) | ((matches['team1'] == teamB) & (matches['team2'] == teamA))]
-st.write(match) # will be removed later; just for testing
+# st.write(match) # will be removed later; just for testing
 
 stat = st.selectbox('Select statistic to visualize', options=['Possession', 'Goals', 'Assists', 'Shots Attempted', 'Total Passes', 'Fouls Committed', 'Forced Turnovers', 'Goal Preventions'])
 st.subheader(f'Visualizing {stat} - {teamA} vs {teamB} ({match["category"].values[0]})')
